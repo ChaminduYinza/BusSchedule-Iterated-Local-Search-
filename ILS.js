@@ -1,31 +1,31 @@
 
 busArray = [{
     name: "bus1",
-    noOfSeats: 300,
+    noOfSeats: 40,
     route: "120",
     length: 20
 },
 {
     name: "bus2",
-    noOfSeats: 40,
+    noOfSeats: 47,
     route: "120",
     length: 18
 },
 {
     name: "bus3",
-    noOfSeats: 50,
+    noOfSeats: 40,
     route: "120",
     length: 20
 },
 {
     name: "bus4",
-    noOfSeats: 35,
+    noOfSeats: 50,
     route: "120",
     length: 20
 },
 {
     name: "bus5",
-    noOfSeats: 40,
+    noOfSeats: 45,
     route: "120",
     length: 20
 },
@@ -63,18 +63,19 @@ busArray = [{
 var globalBest = 0;
 var currentBestSolution = [];
 
-console.log(generateSchedule("8-9", 20, 5, [50, 20, 40], busArray, 10));
+console.log(generateSchedule(new Date("October 13, 2014 08:11:00"), new Date("October 13, 2014 09:20:00"), 20, 5, [40,35,70], busArray, 10));
 
-function generateSchedule(timeSlot, fixedInterval, noOfBusses, avgPassengerCount, busArray, maxItarationCount) {
+function generateSchedule(startTime, endTime, fixedInterval, noOfBusses, avgPassengerCount, busArray, maxItarationCount) {
     let allSolutions = [];
-    let totalTime = (parseInt(timeSlot.split("-")[1]) - parseInt(timeSlot.split("-")[0]));
-    totalTime = totalTime * 60;
+    let totalTime = getHourDifference(startTime, endTime)
     let isValidInitialSolution = true;
     let initialSolution = []
-    let noOfSlots = totalTime / fixedInterval;
+    let noOfSlots = Math.round(totalTime / fixedInterval);
     let count = 0;
     if (noOfBusses < noOfSlots) {
-        return "Number of busses are not enough to generate the schedule"
+        return "Number of busses are not enough to generate the schedule atleast " + noOfSlots + " busses are needed"
+    } else if (noOfSlots > avgPassengerCount.length) {
+        return "Passenger average array is not enough to cover an optimal output\nNo of Slots : " + noOfSlots + "\nPassenger Average Array : " + avgPassengerCount.length;
     }
     for (let r = 0; r < maxItarationCount; r++) {
         let previousGlobalSolution = JSON.parse(JSON.stringify(currentBestSolution));
@@ -85,14 +86,24 @@ function generateSchedule(timeSlot, fixedInterval, noOfBusses, avgPassengerCount
 
             outerloop: for (let i = 0; i < allSolutions.length; i++) {
                 validationCount = validationCount + 1
+                //All the possible solutions are generated and evaluvated
+                if (validationCount > allSolutions.length + 100) {
+                    if (globalBest == 0) {
+                        return [{
+                            busAllocation: currentBestSolution,
+                            message: "Note - There is no optimal solution available for the given inputs this is just a random solution"
+                        }]
+
+
+                    } else {
+                        return [{
+                            busAllocation: currentBestSolution
+                        }]
+                    }
+                }
                 if (allSolutions[i].toString() == initialSolution.toString()) {
                     isValidInitialSolution = false;
                     break outerloop;
-                }
-
-                //All the possible solutions are generated and evaluvated
-                if (validationCount > allSolutions.length + 100) {
-                    return currentBestSolution;
                 }
                 if (isValidInitialSolution == false) {
                     isValidInitialSolution = true;
@@ -113,21 +124,42 @@ function generateSchedule(timeSlot, fixedInterval, noOfBusses, avgPassengerCount
         }
 
         if (count > (maxItarationCount / 2)) {
-            return currentBestSolution;
+
+            if (globalBest == 0) {
+                return [{
+                    busAllocation: currentBestSolution,
+                    message: "Note - There is no optimal solution available for the given inputs this is just a random solution"
+                }]
+
+
+            } else {
+                return [{
+                    busAllocation: currentBestSolution
+                }]
+            }
         }
     }
 
+    if (globalBest == 0) {
+        return [{
+            busAllocation: currentBestSolution,
+            message: "Note - There is no optimal solution available for the given inputs this is just a random solution"
+        }]
 
-    console.log(allSolutions);
 
-    return currentBestSolution;
+    } else {
+        return [{
+            busAllocation: currentBestSolution
+        }]
+    }
 
 
 }
 
-
-// console.log(generateInitialSolution(3, 5));
-
+function getHourDifference(dt1, dt2) {
+    let diff = dt2 - dt1;
+    return Math.floor((diff / 1000) / 60);
+}
 
 function generateInitialSolution(noOfSlots, noOfBusses) {
 
@@ -157,7 +189,7 @@ function generateInitialSolution(noOfSlots, noOfBusses) {
 
         }
         do {
-            isValidRandom = validateRandomValue((currentSum + randomValue), noOfBusses, )
+            isValidRandom = validateRandomValue((currentSum + randomValue), noOfBusses)
 
         }
         while (!isValidRandom);
@@ -185,6 +217,9 @@ function swapSolutionElements(originalSolution, passengerAverage, busArray) {
 
         for (let r = i; r < originalSolution.length; r++) {
             let fitnessValue = evaluvateSolution(solution, passengerAverage, busArray);
+            if (globalBest == fitnessValue) {
+                currentBestSolution = JSON.parse(JSON.stringify(solution));
+            }
             if (globalBest < fitnessValue) {
                 globalBest = fitnessValue;
                 currentBestSolution = JSON.parse(JSON.stringify(solution));
@@ -226,10 +261,13 @@ function evaluvateSolution(solution, passengerAverage, busArray) {
         for (let r = 0; r < newBusArray.length; r++) {
             sumOfSeats = sumOfSeats + newBusArray[r].noOfSeats;
         }
+
         if (sumOfSeats > passengerAverage[i] + 20) {
-            finessValue = finessValue + 1
-        } else if (sumOfSeats > passengerAverage[i]) {
+            finessValue = finessValue
+        } else if (sumOfSeats > passengerAverage[i] + 9) {
             finessValue = finessValue + 2
+        } else if (sumOfSeats > passengerAverage[i]) {
+            finessValue = finessValue + 1
         } else if (sumOfSeats < passengerAverage[i]) {
             finessValue = finessValue - 1
         }
