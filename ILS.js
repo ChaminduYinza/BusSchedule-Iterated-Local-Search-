@@ -249,8 +249,10 @@ function evaluvateSolution(solution, passengerAverage, busArray) {
             sumOfSeats = sumOfSeats + newBusArray[r].noOfSeats;
         }
 
-        if (sumOfSeats >= passengerAverage[i] + 16) {
-            finessValue = finessValue
+
+        //take the difference instead
+        if (sumOfSeats >= passengerAverage[i] + 17) {
+            finessValue = finessValue - 1
         } else if (sumOfSeats >= passengerAverage[i] + 16) {
             finessValue = finessValue
         } else if (sumOfSeats >= passengerAverage[i] + 10 && sumOfSeats < passengerAverage[i] + 15) {
@@ -260,6 +262,19 @@ function evaluvateSolution(solution, passengerAverage, busArray) {
         } else if (sumOfSeats < passengerAverage[i]) {
             finessValue = finessValue - 2
         }
+        // if (sumOfSeats >= passengerAverage[i] + 50) {
+        //     finessValue = finessValue - 3
+        // } else if (sumOfSeats >= passengerAverage[i] + 17) {
+        //     finessValue = finessValue - 2
+        // } else if (sumOfSeats >= passengerAverage[i] + 16) {
+        //     finessValue = finessValue
+        // } else if (sumOfSeats >= passengerAverage[i] + 10 && sumOfSeats < passengerAverage[i] + 15) {
+        //     finessValue = finessValue + 2
+        // } else if (sumOfSeats > passengerAverage[i]) {
+        //     finessValue = finessValue + 1
+        // } else if (sumOfSeats < passengerAverage[i]) {
+        //     finessValue = finessValue - 2
+        // }
 
         // if(solution.length)  Busses wala seat gana ganna mokak hari karanna one :3 
     }
