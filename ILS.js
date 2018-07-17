@@ -1,83 +1,94 @@
 
 busArray = [{
-    name: "bus1",
+    busID: "bus1",
     noOfSeats: 40,
     route: "120",
     length: 20,
     totalRevenue: 0,
-    numberOfTurns: 0
+    numberOfTurns: 0,
+    revenueForTheIteration: 0
 },
 {
-    name: "bus2",
+    busID: "bus2",
     noOfSeats: 47,
     route: "120",
     length: 18,
     totalRevenue: 0,
-    numberOfTurns: 0
+    numberOfTurns: 0,
+    revenueForTheIteration: 0
 },
 {
-    name: "bus3",
+    busID: "bus3",
     noOfSeats: 40,
     route: "120",
     length: 20,
     totalRevenue: 0,
-    numberOfTurns: 0
+    numberOfTurns: 0,
+    revenueForTheIteration: 0
 },
 {
-    name: "bus4",
+    busID: "bus4",
     noOfSeats: 50,
     route: "120",
     length: 20,
     totalRevenue: 0,
-    numberOfTurns: 0
+    numberOfTurns: 0,
+    revenueForTheIteration: 0
 },
 {
-    name: "bus5",
+    busID: "bus5",
     noOfSeats: 45,
     route: "120",
     length: 20,
     totalRevenue: 0,
-    numberOfTurns: 0
+    numberOfTurns: 0,
+    revenueForTheIteration: 0
 },
 {
-    name: "bus6",
+    busID: "bus6",
     noOfSeats: 30,
     route: "120",
     length: 20,
     totalRevenue: 0,
-    numberOfTurns: 0
+    numberOfTurns: 0,
+    revenueForTheIteration: 0
 },
 {
-    name: "bus7",
+    busID: "bus7",
     noOfSeats: 30,
     route: "120",
     length: 20,
     totalRevenue: 0,
-    numberOfTurns: 0
+    numberOfTurns: 0,
+    revenueForTheIteration: 0
 },
 {
-    name: "bus8",
+    busID: "bus8",
     noOfSeats: 30,
     route: "120",
     length: 20,
     totalRevenue: 0,
-    numberOfTurns: 0
+    numberOfTurns: 0,
+    revenueForTheIteration: 0
 },
 {
-    name: "bus9",
+    busID: "bus9",
     noOfSeats: 30,
     route: "120",
     length: 20,
     totalRevenue: 0,
-    numberOfTurns: 0
+    numberOfTurns: 0,
+    revenueForTheIteration: 0
 },
 {
-    name: "bus10",
+    busID: "bus10",
     noOfSeats: 30,
     route: "120",
     length: 20,
     totalRevenue: 0,
-    numberOfTurns: 0
+    numberOfTurns: 0,
+    revenueForTheIteration: 0
+
 }]
 
 var globalBest = -100;
@@ -238,13 +249,19 @@ function swapSolutionElements(originalSolution, passengerAverage, busArray) {
         let solution = JSON.parse(JSON.stringify(originalSolution));
 
         for (let r = i; r < originalSolution.length; r++) {
-            let fitnessValue = evaluvateSolution(solution, passengerAverage, busArray);
+            let returnEvaluvateSolution = evaluvateSolution(solution, passengerAverage, busArray);
+            console.log(returnEvaluvateSolution);
+            console.log(solution);
+            console.log("\n")
+            fitnessValue = returnEvaluvateSolution.fitnessValue;
             if (globalBest == fitnessValue) {
                 returnJSON.allocation.busAllocation = JSON.parse(JSON.stringify(solution));
+                returnJSON.allocation.busIDs = returnEvaluvateSolution.busIDs
             }
             if (globalBest < fitnessValue) {
                 globalBest = fitnessValue;
                 returnJSON.allocation.busAllocation = JSON.parse(JSON.stringify(solution));
+                returnJSON.allocation.busIDs = returnEvaluvateSolution.busIDs
             }
             if (r != solution.length - 1) {
                 let temp = solution[i];
@@ -261,11 +278,15 @@ function swapSolutionElements(originalSolution, passengerAverage, busArray) {
 
 function evaluvateSolution(solution, passengerAverage, busArray) {
     let spliceIndex = 0;
-    let finessValue = 0;
+    let returnEvaluvateJSON = {
+        busIDs: [],
+        fitnessValue: 0
+    }
 
     for (let i = 0; i < solution.length; i++) {
         let sumOfSeats = 0;
         let spliceArray = JSON.parse(JSON.stringify(busArray));
+
 
         let newBusArray = spliceArray.splice(spliceIndex, solution[i])
         spliceIndex = spliceIndex + solution[i];
@@ -274,36 +295,42 @@ function evaluvateSolution(solution, passengerAverage, busArray) {
 
         for (let r = 0; r < newBusArray.length; r++) {
             sumOfSeats = sumOfSeats + newBusArray[r].noOfSeats;
+            if (r == 0) {
+                returnEvaluvateJSON.busIDs[i] = newBusArray[r].busID;
+            } else {
+                returnEvaluvateJSON.busIDs[i] += "," + newBusArray[r].busID;
+            }
+
         }
 
         let slack = sumOfSeats - passengerAverage[i];
 
         if (slack < -10) {
-            finessValue = finessValue - 2;
+            returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue - 2;
         } else if (slack < 0) {
-            finessValue = finessValue - 1;
+            returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue - 1;
         } else if (slack > 100) {
-            finessValue = finessValue - 50;
+            returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue - 50;
         } else if (slack > 90) {
-            finessValue = finessValue - 40;
+            returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue - 40;
         } else if (slack > 80) {
-            finessValue = finessValue - 30;
+            returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue - 30;
         } else if (slack > 70) {
-            finessValue = finessValue - 20;
+            returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue - 20;
         } else if (slack > 60) {
-            finessValue = finessValue - 10;
+            returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue - 10;
         } else if (slack > 50) {
-            finessValue = finessValue - 5;
+            returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue - 5;
         } else if (slack > 40) {
-            finessValue = finessValue - 4;
+            returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue - 4;
         } else if (slack > 30) {
-            finessValue = finessValue - 3;
+            returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue - 3;
         } else if (slack > 20) {
-            finessValue = finessValue - 1;
+            returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue - 1;
         } else if (slack > 5) {
-            finessValue = finessValue + 2;
+            returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue + 2;
         } else if (slack > 0) {
-            finessValue = finessValue + 1;
+            returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue + 1;
         }
 
         //take the difference instead
@@ -338,7 +365,7 @@ function evaluvateSolution(solution, passengerAverage, busArray) {
         // if(solution.length)  Busses wala seat gana ganna mokak hari karanna one :3 
     }
 
-    return finessValue;
+    return returnEvaluvateJSON;
 }
 
 
