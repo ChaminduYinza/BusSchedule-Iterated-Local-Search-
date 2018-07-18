@@ -102,9 +102,9 @@ var returnJSON = {
 
 
 
-console.log(generateSchedule(new Date("October 13, 2014 08:11:00"), new Date("October 13, 2014 09:20:00"), 20, 5, [30, 100, 40], busArray, 10));
+console.log(generateSchedule(new Date("October 13, 2014 08:11:00"), new Date("October 13, 2014 09:20:00"), 20, 5, [30, 30, 10], busArray, 10));
 
-function generateSchedule(startTime, endTime, fixedInterval, noOfBusses, avgPassengerCount, busArray, maxItarationCount) {
+function generateSchedule(startTime, endTime, fixedInterval, noOfBusses, avgPassengerCount, busArray, maxIterationCount) {
     let allSolutions = [];
     let totalTime = getHourDifference(startTime, endTime)
     let isValidInitialSolution = true;
@@ -112,20 +112,24 @@ function generateSchedule(startTime, endTime, fixedInterval, noOfBusses, avgPass
     let noOfSlots = Math.round(totalTime / fixedInterval);
     let count = 0;
     if (noOfBusses < noOfSlots) {
-        return [{ message: "Number of busses are not enough to generate the schedule atleast " + noOfSlots + " busses are needed" }];
+        returnJSON.message = "Number of busses are not enough to generate the schedule atleast " + noOfSlots + " busses are needed";
+        return returnJSON;
     } else if (noOfSlots > avgPassengerCount.length) {
-        return [{ message: "Passenger average array is not enough to cover an optimal output\nNo of Slots : " + noOfSlots + "\nPassenger Average Array : " + avgPassengerCount.length }];
+        returnJSON.message = "Passenger average array is not enough to cover an optimal output\nNo of Slots : " + noOfSlots + "\nPassenger Average Array : " + avgPassengerCount.length;
+        return returnJSON;
     }
-    for (let r = 0; r < maxItarationCount; r++) {
+    //Generate solutions and evaluvate untill maxiteration count exceed
+    for (let r = 0; r < maxIterationCount; r++) {
         let previousGlobalSolution = JSON.parse(JSON.stringify(returnJSON.allocation.busAllocation));
         let validationCount = 0;
         do {
+            //Intialize a new soluion
             initialSolution = generateInitialSolution(noOfSlots, noOfBusses);
-
-
+            //Validating whether the generated solutions is arleady evaluvated or not
             outerloop: for (let i = 0; i < allSolutions.length; i++) {
                 validationCount = validationCount + 1
-                //All the possible solutions are generated and evaluvated
+
+                //Statement becomes true if all the possible solutions are already generated
                 if (validationCount > allSolutions.length + 100) {
                     if (globalBest <= 0) {
                         // Generated solution is optimal for the given output But the number of busses are more than enough
@@ -135,35 +139,32 @@ function generateSchedule(startTime, endTime, fixedInterval, noOfBusses, avgPass
                         return returnJSON
                     }
                 }
+
+                //Break from the loop and generate another solutions if the current solutions is already beign generated 
                 if (allSolutions[i].toString() == initialSolution.toString()) {
                     isValidInitialSolution = false;
                     break outerloop;
                 }
+                //Change isValidInitialSolution true in order to break from the loop
                 if (isValidInitialSolution == false) {
                     isValidInitialSolution = true;
                 }
-
             }
-
         } while (!isValidInitialSolution);
 
+        //Adding the current solutions to the all solution array(pool)
         allSolutions.push(initialSolution);
-
+        //Swap elements and evaluvate
         allSolutions.push(swapSolutionElements(initialSolution, avgPassengerCount, busArray));
-
         if (returnJSON.allocation.busAllocation.toString() == previousGlobalSolution.toString()) {
             count++;
         } else {
             count = 0;
         }
-
-        if (count > (maxItarationCount / 2)) {
-
+        if (count > (maxIterationCount / 2)) {
             if (globalBest <= 0) {
                 returnJSON.message = "Dummy Message"
                 return returnJSON
-
-
             } else {
                 return returnJSON
             }
@@ -173,20 +174,14 @@ function generateSchedule(startTime, endTime, fixedInterval, noOfBusses, avgPass
     if (globalBest <= 0) {
         returnJSON.message = "Dummy Message"
         return returnJSON
-
-
     } else {
         return returnJSON
     }
-
-
 }
 
 function setReturnJSON(solution, passengerAverage) {
     for (let i = 0; i < solution.length; i++) {
-
     }
-
 }
 
 function getHourDifference(dt1, dt2) {
@@ -209,21 +204,16 @@ function generateInitialSolution(noOfSlots, noOfBusses) {
 
         let sumOfCurrentSolution = solution.reduce((a, b) => a + b, 0);
         let maxRandomForCurrrentIteration = noOfBusses - sumOfCurrentSolution - i + 1;
-
         if (i == 1) {
             randomValue = maxRandomForCurrrentIteration;
         } else {
-
             do {
                 randomValue = Math.floor((Math.random() * maxValue) + minValue)
                 isValidRandom = (maxRandomForCurrrentIteration >= randomValue)
-
             } while (!isValidRandom);
-
         }
         do {
             isValidRandom = validateRandomValue((currentSum + randomValue), noOfBusses)
-
         }
         while (!isValidRandom);
         currentSum = currentSum + randomValue;
@@ -243,11 +233,8 @@ function validateRandomValue(currentSum, noOfBusses) {
 
 
 function swapSolutionElements(originalSolution, passengerAverage, busArray) {
-
-
     for (let i = 0; i < originalSolution.length; i++) {
         let solution = JSON.parse(JSON.stringify(originalSolution));
-
         for (let r = i; r < originalSolution.length; r++) {
             let returnEvaluvateSolution = evaluvateSolution(solution, passengerAverage, busArray);
             console.log(returnEvaluvateSolution);
