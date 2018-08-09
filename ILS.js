@@ -1,7 +1,9 @@
-
+//Last allocated time slot kiala ekak tiyaganna one
+// eken allocate karanne eh time eka total journet time x 2 walta wadinam witarai
+//Journey eka iwara wela bus eka available da nadda kiala danna one availble station eka danna one
 busArray = [{
     busID: "bus1",
-    noOfSeats: 40,
+    noOfSeats: 50,
     route: "120",
     length: 20,
     totalRevenue: 0,
@@ -19,15 +21,6 @@ busArray = [{
 },
 {
     busID: "bus3",
-    noOfSeats: 40,
-    route: "120",
-    length: 20,
-    totalRevenue: 0,
-    numberOfTurns: 0,
-    revenueForTheIteration: 0
-},
-{
-    busID: "bus4",
     noOfSeats: 50,
     route: "120",
     length: 20,
@@ -36,8 +29,17 @@ busArray = [{
     revenueForTheIteration: 0
 },
 {
+    busID: "bus4",
+    noOfSeats: 53,
+    route: "120",
+    length: 20,
+    totalRevenue: 0,
+    numberOfTurns: 0,
+    revenueForTheIteration: 0
+},
+{
     busID: "bus5",
-    noOfSeats: 45,
+    noOfSeats: 55,
     route: "120",
     length: 20,
     totalRevenue: 0,
@@ -46,7 +48,7 @@ busArray = [{
 },
 {
     busID: "bus6",
-    noOfSeats: 30,
+    noOfSeats: 55,
     route: "120",
     length: 20,
     totalRevenue: 0,
@@ -55,7 +57,7 @@ busArray = [{
 },
 {
     busID: "bus7",
-    noOfSeats: 30,
+    noOfSeats: 58,
     route: "120",
     length: 20,
     totalRevenue: 0,
@@ -64,7 +66,7 @@ busArray = [{
 },
 {
     busID: "bus8",
-    noOfSeats: 30,
+    noOfSeats: 47,
     route: "120",
     length: 20,
     totalRevenue: 0,
@@ -73,7 +75,7 @@ busArray = [{
 },
 {
     busID: "bus9",
-    noOfSeats: 30,
+    noOfSeats: 48,
     route: "120",
     length: 20,
     totalRevenue: 0,
@@ -82,7 +84,247 @@ busArray = [{
 },
 {
     busID: "bus10",
-    noOfSeats: 30,
+    noOfSeats: 50,
+    route: "120",
+    length: 20,
+    totalRevenue: 0,
+    numberOfTurns: 0,
+    revenueForTheIteration: 0
+
+},
+{
+    busID: "bus11",
+    noOfSeats: 50,
+    route: "120",
+    length: 20,
+    totalRevenue: 0,
+    numberOfTurns: 0,
+    revenueForTheIteration: 0
+
+},
+{
+    busID: "bus12",
+    noOfSeats: 55,
+    route: "120",
+    length: 20,
+    totalRevenue: 0,
+    numberOfTurns: 0,
+    revenueForTheIteration: 0
+
+},
+{
+    busID: "bus13",
+    noOfSeats: 58,
+    route: "120",
+    length: 20,
+    totalRevenue: 0,
+    numberOfTurns: 0,
+    revenueForTheIteration: 0
+
+},
+{
+    busID: "bus14",
+    noOfSeats: 47,
+    route: "120",
+    length: 20,
+    totalRevenue: 0,
+    numberOfTurns: 0,
+    revenueForTheIteration: 0
+
+},
+{
+    busID: "bus15",
+    noOfSeats: 48,
+    route: "120",
+    length: 20,
+    totalRevenue: 0,
+    numberOfTurns: 0,
+    revenueForTheIteration: 0
+
+},
+{
+    busID: "bus16",
+    noOfSeats: 50,
+    route: "120",
+    length: 20,
+    totalRevenue: 0,
+    numberOfTurns: 0,
+    revenueForTheIteration: 0
+
+},
+{
+    busID: "bus17",
+    noOfSeats: 50,
+    route: "120",
+    length: 20,
+    totalRevenue: 0,
+    numberOfTurns: 0,
+    revenueForTheIteration: 0
+
+},
+{
+    busID: "bus18",
+    noOfSeats: 53,
+    route: "120",
+    length: 20,
+    totalRevenue: 0,
+    numberOfTurns: 0,
+    revenueForTheIteration: 0
+
+},
+{
+    busID: "bus19",
+    noOfSeats: 58,
+    route: "120",
+    length: 20,
+    totalRevenue: 0,
+    numberOfTurns: 0,
+    revenueForTheIteration: 0
+
+},
+{
+    busID: "bus20",
+    noOfSeats: 59,
+    route: "120",
+    length: 20,
+    totalRevenue: 0,
+    numberOfTurns: 0,
+    revenueForTheIteration: 0
+
+},
+{
+    busID: "bus21",
+    noOfSeats: 48,
+    route: "120",
+    length: 20,
+    totalRevenue: 0,
+    numberOfTurns: 0,
+    revenueForTheIteration: 0
+
+},
+{
+    busID: "bus22",
+    noOfSeats: 45,
+    route: "120",
+    length: 20,
+    totalRevenue: 0,
+    numberOfTurns: 0,
+    revenueForTheIteration: 0
+
+},
+{
+    busID: "bus23",
+    noOfSeats: 50,
+    route: "120",
+    length: 20,
+    totalRevenue: 0,
+    numberOfTurns: 0,
+    revenueForTheIteration: 0
+
+},
+{
+    busID: "bus24",
+    noOfSeats: 50,
+    route: "120",
+    length: 20,
+    totalRevenue: 0,
+    numberOfTurns: 0,
+    revenueForTheIteration: 0
+
+},
+{
+    busID: "bus25",
+    noOfSeats: 50,
+    route: "120",
+    length: 20,
+    totalRevenue: 0,
+    numberOfTurns: 0,
+    revenueForTheIteration: 0
+
+},
+{
+    busID: "bus26",
+    noOfSeats: 50,
+    route: "120",
+    length: 20,
+    totalRevenue: 0,
+    numberOfTurns: 0,
+    revenueForTheIteration: 0
+
+},
+{
+    busID: "bus27",
+    noOfSeats: 50,
+    route: "120",
+    length: 20,
+    totalRevenue: 0,
+    numberOfTurns: 0,
+    revenueForTheIteration: 0
+
+},
+{
+    busID: "bus28",
+    noOfSeats: 50,
+    route: "120",
+    length: 20,
+    totalRevenue: 0,
+    numberOfTurns: 0,
+    revenueForTheIteration: 0
+
+},
+{
+    busID: "bus29",
+    noOfSeats: 50,
+    route: "120",
+    length: 20,
+    totalRevenue: 0,
+    numberOfTurns: 0,
+    revenueForTheIteration: 0
+
+},
+{
+    busID: "bus30",
+    noOfSeats: 50,
+    route: "120",
+    length: 20,
+    totalRevenue: 0,
+    numberOfTurns: 0,
+    revenueForTheIteration: 0
+
+},
+{
+    busID: "bus31",
+    noOfSeats: 50,
+    route: "120",
+    length: 20,
+    totalRevenue: 0,
+    numberOfTurns: 0,
+    revenueForTheIteration: 0
+
+},
+{
+    busID: "bus32",
+    noOfSeats: 50,
+    route: "120",
+    length: 20,
+    totalRevenue: 0,
+    numberOfTurns: 0,
+    revenueForTheIteration: 0
+
+},
+{
+    busID: "bus33",
+    noOfSeats: 50,
+    route: "120",
+    length: 20,
+    totalRevenue: 0,
+    numberOfTurns: 0,
+    revenueForTheIteration: 0
+
+},
+{
+    busID: "bus34",
+    noOfSeats: 50,
     route: "120",
     length: 20,
     totalRevenue: 0,
@@ -90,6 +332,88 @@ busArray = [{
     revenueForTheIteration: 0
 
 }]
+
+// ,
+// {
+//     busID: "bus10",
+//     noOfSeats: 50,
+//     route: "120",
+//     length: 20,
+//     totalRevenue: 0,
+//     numberOfTurns: 0,
+//     revenueForTheIteration: 0
+
+// },
+// {
+//     busID: "bus10",
+//     noOfSeats: 50,
+//     route: "120",
+//     length: 20,
+//     totalRevenue: 0,
+//     numberOfTurns: 0,
+//     revenueForTheIteration: 0
+
+// },
+// {
+//     busID: "bus10",
+//     noOfSeats: 50,
+//     route: "120",
+//     length: 20,
+//     totalRevenue: 0,
+//     numberOfTurns: 0,
+//     revenueForTheIteration: 0
+
+// },
+// {
+//     busID: "bus10",
+//     noOfSeats: 50,
+//     route: "120",
+//     length: 20,
+//     totalRevenue: 0,
+//     numberOfTurns: 0,
+//     revenueForTheIteration: 0
+
+// },
+// {
+//     busID: "bus10",
+//     noOfSeats: 50,
+//     route: "120",
+//     length: 20,
+//     totalRevenue: 0,
+//     numberOfTurns: 0,
+//     revenueForTheIteration: 0
+
+// },
+// {
+//     busID: "bus10",
+//     noOfSeats: 50,
+//     route: "120",
+//     length: 20,
+//     totalRevenue: 0,
+//     numberOfTurns: 0,
+//     revenueForTheIteration: 0
+
+// },
+// {
+//     busID: "bus10",
+//     noOfSeats: 50,
+//     route: "120",
+//     length: 20,
+//     totalRevenue: 0,
+//     numberOfTurns: 0,
+//     revenueForTheIteration: 0
+
+// },
+// {
+//     busID: "bus10",
+//     noOfSeats: 50,
+//     route: "120",
+//     length: 20,
+//     totalRevenue: 0,
+//     numberOfTurns: 0,
+//     revenueForTheIteration: 0
+
+// }
 
 var globalBest = -100;
 var returnJSON = {
@@ -102,7 +426,7 @@ var returnJSON = {
 
 
 
-console.log(generateSchedule(new Date("October 13, 2014 08:11:00"), new Date("October 13, 2014 09:20:00"), 20, 5, [30, 30, 10], busArray, 10));
+console.log(generateSchedule(new Date("October 13, 2014 20:00:00"), new Date("October 13, 2014 23:00:00"), 30, 6, [45,35,40,20,10,5], busArray, 100000000));
 
 function generateSchedule(startTime, endTime, fixedInterval, noOfBusses, avgPassengerCount, busArray, maxIterationCount) {
     let allSolutions = [];
@@ -130,7 +454,7 @@ function generateSchedule(startTime, endTime, fixedInterval, noOfBusses, avgPass
                 validationCount = validationCount + 1
 
                 //Statement becomes true if all the possible solutions are already generated
-                if (validationCount > allSolutions.length + 100) {
+                if (validationCount > allSolutions.length + 500) {
                     if (globalBest <= 0) {
                         // Generated solution is optimal for the given output But the number of busses are more than enough
                         returnJSON.message = "Dummy Message"
@@ -192,7 +516,7 @@ function getHourDifference(dt1, dt2) {
 function generateInitialSolution(noOfSlots, noOfBusses) {
 
     let solution = []
-    let maxValue = (noOfBusses - noOfSlots) + 1;
+    var maxValue = (noOfBusses - noOfSlots) + 1;
     let minValue = 1;
     let currentSum = 0;
     let randomValue = 0;
@@ -200,7 +524,10 @@ function generateInitialSolution(noOfSlots, noOfBusses) {
 
 
     for (let i = noOfSlots; i > 0; i--) {
-
+        if (i >= (noOfSlots / 2)) {
+            maxValue = maxValue/2;
+        }
+      
 
         let sumOfCurrentSolution = solution.reduce((a, b) => a + b, 0);
         let maxRandomForCurrrentIteration = noOfBusses - sumOfCurrentSolution - i + 1;
