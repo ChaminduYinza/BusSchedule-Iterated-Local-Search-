@@ -426,7 +426,7 @@ var returnJSON = {
 
 
 
-console.log(generateSchedule(new Date("October 13, 2014 20:00:00"), new Date("October 13, 2014 23:00:00"), 30, 6, [45,35,40,20,10,5], busArray, 100000000));
+console.log(generateSchedule(new Date("October 13, 2014 06:30:00"), new Date("October 13, 2014 07:30:00"), 10, 9, [50, 54, 53, 58, 70, 90], busArray, 1000000));
 
 function generateSchedule(startTime, endTime, fixedInterval, noOfBusses, avgPassengerCount, busArray, maxIterationCount) {
     let allSolutions = [];
@@ -524,10 +524,10 @@ function generateInitialSolution(noOfSlots, noOfBusses) {
 
 
     for (let i = noOfSlots; i > 0; i--) {
-        if (i >= (noOfSlots / 2)) {
-            maxValue = maxValue/2;
-        }
-      
+        // if (i >= (noOfSlots / 2)) {
+        //     maxValue = maxValue/2;
+        // }
+
 
         let sumOfCurrentSolution = solution.reduce((a, b) => a + b, 0);
         let maxRandomForCurrrentIteration = noOfBusses - sumOfCurrentSolution - i + 1;
@@ -565,7 +565,7 @@ function swapSolutionElements(originalSolution, passengerAverage, busArray) {
         for (let r = i; r < originalSolution.length; r++) {
             let returnEvaluvateSolution = evaluvateSolution(solution, passengerAverage, busArray);
             console.log(returnEvaluvateSolution);
-            console.log(solution);
+            console.log("******** " + solution);
             console.log("\n")
             fitnessValue = returnEvaluvateSolution.fitnessValue;
             if (globalBest == fitnessValue) {
@@ -592,6 +592,7 @@ function swapSolutionElements(originalSolution, passengerAverage, busArray) {
 
 function evaluvateSolution(solution, passengerAverage, busArray) {
     let spliceIndex = 0;
+    let isEnoughSeats = false;
     let returnEvaluvateJSON = {
         busIDs: [],
         fitnessValue: 0
@@ -618,65 +619,93 @@ function evaluvateSolution(solution, passengerAverage, busArray) {
         }
 
         let slack = sumOfSeats - passengerAverage[i];
+        if (slack >= 0) {
+            isEnoughSeats = true;
+        } else {
+            isEnoughSeats = false;
+        }
+
+
 
         if (slack < -10) {
-            returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue - 2;
+            returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue - 8;
         } else if (slack < 0) {
-            returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue - 1;
+            returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue - 2;
         } else if (slack > 100) {
-            returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue - 50;
-        } else if (slack > 90) {
             returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue - 40;
-        } else if (slack > 80) {
+        } else if (slack > 90) {
             returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue - 30;
-        } else if (slack > 70) {
+        } else if (slack > 80) {
             returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue - 20;
-        } else if (slack > 60) {
+        } else if (slack > 70) {
             returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue - 10;
+        } else if (slack > 60) {
+            returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue - 9;
         } else if (slack > 50) {
-            returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue - 5;
-        } else if (slack > 40) {
-            returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue - 4;
-        } else if (slack > 30) {
             returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue - 3;
-        } else if (slack > 20) {
+        } else if (slack > 40) {
+            returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue - 2;
+        } else if (slack > 30) {
             returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue - 1;
+        } else if (slack > 20) {
+            returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue + 0;
         } else if (slack > 5) {
             returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue + 2;
         } else if (slack > 0) {
             returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue + 1;
         }
 
-        //take the difference instead
-        // if (sumOfSeats >= passengerAverage[i] + 17) {
-        //     finessValue = finessValue - 1
-        // } else if (sumOfSeats >= passengerAverage[i] + 16) {
-        //     finessValue = finessValue
-        // } else if (sumOfSeats >= passengerAverage[i] + 10 && sumOfSeats < passengerAverage[i] + 15) {
-        //     finessValue = finessValue + 2
-        // } else if (sumOfSeats > passengerAverage[i]) {
-        //     finessValue = finessValue + 1
-        // } else if (sumOfSeats < passengerAverage[i]) {
-        //     finessValue = finessValue - 2
+        // let sortedArray = JSON.parse(JSON.stringify(solution));
+        // let passengerAverageArray = JSON.parse(JSON.stringify(passengerAverage));
+        // sortedArray.sort(function (a, b) { return b - a });
+        // if (isEnoughSeats && i == solution.length - 1) {
+        //     for (let k = 0; k < sortedArray.length; k++) {
+
+        //         let maxValueOfTheSolution = solution.indexOf(sortedArray[k])
+        //         let maxValueOfThePassengerAverage = passengerAverage.indexOf(Math.max(...passengerAverageArray));
+        //         if (maxValueOfTheSolution != maxValueOfThePassengerAverage) {
+        //             returnEvaluvateJSON.fitnessValue = -1500
+        //         } else {
+        //             passengerAverageArray.splice(maxValueOfThePassengerAverage, 1);
+        //             sortedArray.splice(maxValueOfTheSolution, 1);
+        //         }
+        //     }
         // }
 
+        // for (let k = 0; k < passengerAverage.length - 1; k++) {
+
+        //     if (passengerAverage[k] > passengerAverage[k + 1]) {
+        //         if (solution[k] < solution[k + 1]) {
+        //             returnEvaluvateJSON.fitnessValue = -1500
+        //         }
+        //     } else {
+        //         if (solution[k] > solution[k + 1]) {
+        //             returnEvaluvateJSON.fitnessValue = -1500
+        //         }
+        //     }
 
 
-        // if (sumOfSeats >= passengerAverage[i] + 50) {
-        //     finessValue = finessValue - 3
-        // } else if (sumOfSeats >= passengerAverage[i] + 17) {
-        //     finessValue = finessValue - 2
-        // } else if (sumOfSeats >= passengerAverage[i] + 16) {
-        //     finessValue = finessValue
-        // } else if (sumOfSeats >= passengerAverage[i] + 10 && sumOfSeats < passengerAverage[i] + 15) {
-        //     finessValue = finessValue + 2
-        // } else if (sumOfSeats > passengerAverage[i]) {
-        //     finessValue = finessValue + 1
-        // } else if (sumOfSeats < passengerAverage[i]) {
-        //     finessValue = finessValue - 2
         // }
+        [10, 25, 20, 30, 45]
 
-        // if(solution.length)  Busses wala seat gana ganna mokak hari karanna one :3 
+        for (let k = 0; k < passengerAverage.length - 1; k++) {
+            for (let j = 0; j < passengerAverage.length; j++) {
+                if (passengerAverage[k] > passengerAverage[j]) {
+                    if (solution[k] < solution[j]) {
+                        returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue - 1500
+                    }
+                } else {
+                    if (solution[k] > solution[j]) {
+                        returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue - 1500
+                    }
+                }
+
+            }
+
+
+        }
+
+
     }
 
     return returnEvaluvateJSON;
