@@ -426,7 +426,7 @@ var returnJSON = {
 
 
 
-console.log(generateSchedule(new Date("October 13, 2014 06:30:00"), new Date("October 13, 2014 07:30:00"), 10, 9, [50, 54, 53, 58, 70, 90], busArray, 1000000));
+console.log(generateSchedule(new Date("October 13, 2014 12:30:00"), new Date("October 13, 2014 13:30:00"), 15, 8, [77, 75, 68, 81, 72], busArray, 1000000));
 
 function generateSchedule(startTime, endTime, fixedInterval, noOfBusses, avgPassengerCount, busArray, maxIterationCount) {
     let allSolutions = [];
@@ -686,8 +686,8 @@ function evaluvateSolution(solution, passengerAverage, busArray) {
 
 
         // }
-        [10, 25, 20, 30, 45]
-
+    
+        //Evaluvating whether the busses are divided in a proper way if the number of busses are more than the actual need
         for (let k = 0; k < passengerAverage.length - 1; k++) {
             for (let j = 0; j < passengerAverage.length; j++) {
                 if (passengerAverage[k] > passengerAverage[j]) {
