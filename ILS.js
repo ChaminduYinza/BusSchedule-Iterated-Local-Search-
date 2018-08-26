@@ -421,12 +421,13 @@ var returnJSON = {
         busAllocation: [],
         busIDs: []
     },
-    message: ""
+    message: "",
+    fitnessValue: 0
 };
 
 
 
-console.log(generateSchedule(new Date("October 13, 2014 12:30:00"), new Date("October 13, 2014 13:30:00"), 15, 8, [77, 75, 68, 81, 72], busArray, 1000000));
+console.log(generateSchedule(new Date("October 13, 2014 12:30:00"), new Date("October 13, 2014 13:30:00"), 15, 9, [60, 75, 68, 81, 90], busArray, 1000000));
 
 function generateSchedule(startTime, endTime, fixedInterval, noOfBusses, avgPassengerCount, busArray, maxIterationCount) {
     let allSolutions = [];
@@ -571,11 +572,13 @@ function swapSolutionElements(originalSolution, passengerAverage, busArray) {
             if (globalBest == fitnessValue) {
                 returnJSON.allocation.busAllocation = JSON.parse(JSON.stringify(solution));
                 returnJSON.allocation.busIDs = returnEvaluvateSolution.busIDs
+                returnJSON.fitnessValue = fitnessValue
             }
             if (globalBest < fitnessValue) {
                 globalBest = fitnessValue;
                 returnJSON.allocation.busAllocation = JSON.parse(JSON.stringify(solution));
                 returnJSON.allocation.busIDs = returnEvaluvateSolution.busIDs
+                returnJSON.fitnessValue = fitnessValue
             }
             if (r != solution.length - 1) {
                 let temp = solution[i];
@@ -628,29 +631,29 @@ function evaluvateSolution(solution, passengerAverage, busArray) {
 
 
         if (slack < -10) {
-            returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue - 8;
+            returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue - 0.5;
         } else if (slack < 0) {
-            returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue - 2;
-        } else if (slack > 100) {
-            returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue - 40;
-        } else if (slack > 90) {
-            returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue - 30;
-        } else if (slack > 80) {
-            returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue - 20;
-        } else if (slack > 70) {
-            returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue - 10;
-        } else if (slack > 60) {
-            returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue - 9;
-        } else if (slack > 50) {
-            returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue - 3;
-        } else if (slack > 40) {
-            returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue - 2;
-        } else if (slack > 30) {
             returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue - 1;
+        } else if (slack > 100) {
+            returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue - 5.2;
+        } else if (slack > 90) {
+            returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue - 4.1;
+        } else if (slack > 80) {
+            returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue - 3;
+        } else if (slack > 70) {
+            returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue - 1.9;
+        } else if (slack > 60) {
+            returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue - 0.8;
+        } else if (slack > 50) {
+            returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue - 0.7;
+        } else if (slack > 40) {
+            returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue - 0.6;
+        } else if (slack > 30) {
+            returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue - 0.5;
         } else if (slack > 20) {
             returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue + 0;
         } else if (slack > 5) {
-            returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue + 2;
+            returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue + 1.5;
         } else if (slack > 0) {
             returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue + 1;
         }
@@ -686,17 +689,21 @@ function evaluvateSolution(solution, passengerAverage, busArray) {
 
 
         // }
-    
+
         //Evaluvating whether the busses are divided in a proper way if the number of busses are more than the actual need
         for (let k = 0; k < passengerAverage.length - 1; k++) {
             for (let j = 0; j < passengerAverage.length; j++) {
                 if (passengerAverage[k] > passengerAverage[j]) {
                     if (solution[k] < solution[j]) {
-                        returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue - 1500
+                        returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue - 0.5
+                    } else {
+                        returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue + 0.05
                     }
                 } else {
                     if (solution[k] > solution[j]) {
-                        returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue - 1500
+                        returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue - 0.5
+                    } else {
+                        returnEvaluvateJSON.fitnessValue = returnEvaluvateJSON.fitnessValue + 0.05
                     }
                 }
 
