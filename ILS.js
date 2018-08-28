@@ -425,10 +425,10 @@ var returnJSON = {
     fitnessValue: 0
 };
 
+var date = new Date()
 
-
-console.log(generateSchedule(new Date("October 13, 2014 12:30:00"), new Date("October 13, 2014 13:30:00"), 15, 9, [60, 75, 68, 81, 90], busArray, 1000000));
-
+console.log(generateSchedule(new Date("October 13, 2014 08:30:00"), new Date("October 13, 2014 10:00:00"), /*Fixed Interval*/20 , /*Number of busses*/8, /*Passenger Average*/[73, 68, 47, 40, 48], busArray, /*Number of iterations*/1000));
+console.log(new Date() - date)
 function generateSchedule(startTime, endTime, fixedInterval, noOfBusses, avgPassengerCount, busArray, maxIterationCount) {
     let allSolutions = [];
     let totalTime = getHourDifference(startTime, endTime)
@@ -565,9 +565,9 @@ function swapSolutionElements(originalSolution, passengerAverage, busArray) {
         let solution = JSON.parse(JSON.stringify(originalSolution));
         for (let r = i; r < originalSolution.length; r++) {
             let returnEvaluvateSolution = evaluvateSolution(solution, passengerAverage, busArray);
-            console.log(returnEvaluvateSolution);
-            console.log("******** " + solution);
-            console.log("\n")
+            // console.log(returnEvaluvateSolution);
+            // console.log("******** " + solution);
+            // console.log("\n")
             fitnessValue = returnEvaluvateSolution.fitnessValue;
             if (globalBest == fitnessValue) {
                 returnJSON.allocation.busAllocation = JSON.parse(JSON.stringify(solution));
